@@ -9,11 +9,19 @@ package workshop;
  * @author bulivaa <arthur.buliva@unon.org>
  */
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.stream.JsonParser;
 
 /**
  * @author aaa
@@ -64,26 +72,33 @@ public class FileList
 
         String filesList = listFiles(ticketURLResponse, "document-manager");
 
+        InputStream stream = new ByteArrayInputStream(filesList.getBytes(StandardCharsets.UTF_8));
 
-         JSONObject jObject = new JSONObject(jString);
-       JSONObject geoObject = jObject.getJSONObject("geodata");
+        JsonReader jsonReader = Json.createReader(stream);
 
-       String geoId = geoObject.getString("id");
-           System.out.println(geoId);
+        //get JsonObject from JsonReader
+        JsonObject jsonObject = jsonReader.readObject();
 
-       String name = geoObject.getString("name");
-       System.out.println(name);
+        //we can close IO resource and JsonReader now
+        jsonReader.close();
 
-       String gender=geoObject.getString("gender");
-       System.out.println(gender);
+        JsonArray data = (JsonArray) jsonObject.get("items");
 
-       String lat=geoObject.getString("latitude");
-       System.out.println(lat);
+        for (int i = 0; i < data.size(); i++)
+        {
+//            System.out.println(data.get(i));
 
-       String longit =geoObject.getString("longitude");
-       System.out.println(longit);
+            JsonObject fileObject = (JsonObject) data.get(i);
+            System.out.println(fileObject.get("displayName"));
+        }
 
-        System.out.println(filesList);
+//        System.out.println(data);
+
+//        System.out.println(jsonObject.get("items"));
+
+
+
+//        System.out.println(filesList);
     }
 
 }
