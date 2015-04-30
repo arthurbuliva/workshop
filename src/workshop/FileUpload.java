@@ -78,6 +78,9 @@ public class FileUpload
         InteractiveAuthentication ticket = new InteractiveAuthentication();
         String ticketURLResponse = ticket.getTicket(alfrescoTiccketURL);
 
+        System.out.println(alfrescoTiccketURL);
+
+        System.exit(0);
 
         File f = new File("/home/bulivaa/Documents/Resume and Cover Letter/ArthurBuliva.pdf");
         FileInputStream is = new FileInputStream(f);

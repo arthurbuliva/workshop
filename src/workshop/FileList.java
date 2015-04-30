@@ -21,6 +21,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonValue;
 import javax.json.stream.JsonParser;
 
 /**
@@ -84,20 +85,29 @@ public class FileList
 
         JsonArray data = (JsonArray) jsonObject.get("items");
 
-        for (int i = 0; i < data.size(); i++)
+        for (JsonValue data1 : data)
         {
-//            System.out.println(data.get(i));
-
-            JsonObject fileObject = (JsonObject) data.get(i);
+//            System.out.println(data1);
+            JsonObject fileObject = (JsonObject) data1;
             System.out.println(fileObject.get("displayName"));
+
+            String nodeRef = fileObject.get("webdavUrl").toString().replaceAll("\"", "");
+            
+            String downloadLink = "http://10.104.104.27:8080/alfresco"
+                    + nodeRef
+                    + "?ticket="
+                    + ticketURLResponse;
+
+            System.out.println(downloadLink);
+
+
+
+
+
+
         }
-
 //        System.out.println(data);
-
 //        System.out.println(jsonObject.get("items"));
-
-
-
 //        System.out.println(filesList);
     }
 
